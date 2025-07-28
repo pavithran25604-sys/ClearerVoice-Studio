@@ -170,7 +170,7 @@ def decode_one_audio_frcrn_se_16k(model, device, inputs, args):
 
     # Process the inputs in segments if necessary
     if decode_do_segment:
-        outputs = np.zeros(b, t)  # Initialize the output array
+        outputs = np.zeros((b, t))  # Initialize the output array
         give_up_length = (window - stride) // 2  # Calculate length to give up at each segment
         current_idx = 0  # Initialize current index for segmentation
 
@@ -308,7 +308,7 @@ def _decode_one_audio_mossformergan_se_16k(model, device, inputs, norm_factor, a
     outputs = istft(pred_spec_uncompress, args, center=True, periodic=True, onesided=True)
 
     # Normalize the output audio by dividing by the normalization factor
-    outputs = outputs / norm_factor
+    outputs = outputs / norm_factor.unsqueeze(1)
 
     return outputs[:, :input_len].detach().cpu().numpy()  # Return the output as a numpy array
 
@@ -358,7 +358,7 @@ def decode_one_audio_mossformer2_se_48k(model, device, inputs, args):
 
             audio = torch.from_numpy(inputs).type(torch.FloatTensor)  # Convert to Torch tensor
             b, t = audio.shape  # Update length after conversion
-            outputs = torch.from_numpy(np.zeros(b, t))  # Initialize output tensor
+            outputs = torch.from_numpy(np.zeros((b, t)))  # Initialize output tensor
             give_up_length = (window - stride) // 2  # Determine length to ignore at the edges
             dfsmn_memory_length = 0  # Placeholder for potential memory length
             current_idx = 0  # Initialize current index for sliding window
@@ -580,7 +580,7 @@ def decode_one_audio_mossformer2_sr_48k(model, device, inputs, args):
                 mel_input_b = torch.cat([mel_input_b, mel_input], dim=0)
         mossformer_output = model[0](mel_input_b.to(device))
         generator_output = model[1](mossformer_output)
-        outputs = generator_output.squeeze()
+        outputs = generator_output.squeeze(1)
 
     outputs_pred = outputs.detach().cpu().numpy()
     for batch_idx in range(b):

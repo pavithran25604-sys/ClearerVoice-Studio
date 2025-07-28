@@ -5,7 +5,7 @@ if False:
     myClearVoice = ClearVoice(task='speech_super_resolution', model_names=['MossFormer2_SR_48K'])
 
     ##1sd calling method: process the waveform from input file and return output waveform, then write to output_MossFormer2_SR_48K_xxx with the same audio format
-    output_wav = myClearVoice(input_path='samples/input_sr_8k.wav', online_write=False)
+    output_wav = myClearVoice(input_path='samples/input_sr.wav', online_write=False)
     myClearVoice.write(output_wav, output_path='samples/output_MossFormer2_SR_48K_input_sr_8k.wav')
     
     ##2nd calling method: process all wav files in 'path_to_input_wavs_sr/' and write outputs to 'path_to_output_wavs'
@@ -64,7 +64,7 @@ if False:
     myClearVoice(input_path='samples/scp/audio_samples.scp', online_write=True, output_path='samples/path_to_output_wavs_scp')
     
 ##-----Demo Four: use FRCRN_SE_16K model for speech enhancement -----------------
-if True:
+if False:
     myClearVoice = ClearVoice(task='speech_enhancement', model_names=['FRCRN_SE_16K'])
 
     ##1sd calling method: process an input waveform and return output waveform, then write to output_FRCRN_SE_16K.wav
@@ -92,7 +92,7 @@ if False:
     myClearVoice(input_path='samples/scp/audio_samples.scp', online_write=True, output_path='samples/path_to_output_wavs_scp')
 
 ##-----Demo Six: use MossFormer2_SS_16K model for speech separation -----------------
-if False:
+if True:
     myClearVoice = ClearVoice(task='speech_separation', model_names=['MossFormer2_SS_16K'])
 
     ##1sd calling method: process an input waveform and return output waveform, then write to output_MossFormer2_SS_16K_s1.wav and output_MossFormer2_SS_16K_s2.wav

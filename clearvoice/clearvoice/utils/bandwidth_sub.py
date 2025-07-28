@@ -20,7 +20,7 @@ def detect_bandwidth_org(signal, fs, energy_threshold=0.95):
     f_high = f[np.argmax(cumulative_energy >= energy_threshold)]
     return f_low, f_high
 
-def detect_bandwidth(signal, fs, energy_threshold=0.99):
+def detect_bandwidth(signal, fs, energy_threshold=0.9996):
     f, t, Zxx = stft(signal, fs=fs)
     psd = np.abs(Zxx)**2
     total_energy = np.sum(psd)
@@ -111,7 +111,6 @@ if __name__ == "__main__":
 
         # Detect effective bandwidth of the first signal
         f_low, f_high = detect_bandwidth(audio1, fs1)
-        print(f"Effective bandwidth: {f_low} Hz to {f_high} Hz")
 
         # Replace the lower frequency of the second audio
         replaced_audio = replace_bandwidth(audio1, audio2, fs2, f_low, f_high)

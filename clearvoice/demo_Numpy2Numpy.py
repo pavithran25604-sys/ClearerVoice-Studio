@@ -8,7 +8,7 @@ This demo shows that ClearVoice provide batch processing from numpy input to num
 """
 
 ##-----Demo One: use MossFormer2_SR_48K model for speech super-resolution -----------------
-if False:
+if True:
     print('testing MossFormer2_SR_48K ...')
     myClearVoice = ClearVoice(task='speech_super_resolution', model_names=['MossFormer2_SR_48K'])
 
@@ -44,7 +44,7 @@ if True:
     sf.write('samples/output_MossFormer2_SE_48K_batch.wav', output_wav[0,:], 48000)    
       
 ##-----Demo Four: use FRCRN_SE_16K model for speech enhancement -----------------
-if False:
+if True:
     print('testing FRCRN_SE_16K ...')
     myClearVoice = ClearVoice(task='speech_enhancement', model_names=['FRCRN_SE_16K'])
 
@@ -54,6 +54,7 @@ if False:
         audio = librosa.resample(audio, orig_sr=sr, target_sr=16000)
     if len(audio.shape) < 2:
     	audio = np.reshape(audio, [1, audio.shape[0]])
+    #audio = np.concatenate((audio, audio), axis=0)
     audio = audio.astype(np.float32)
     ## audio: [batch, length]
     ##output_wav: [batch, length]
@@ -61,7 +62,7 @@ if False:
     sf.write('samples/output_FRCRN_SE_16K_batch.wav', output_wav[0, :], 16000)
     
 ##-----Demo Five: use MossFormerGAN_SE_16K model for speech enhancement -----------------
-if False:
+if True:
     print(f'testing MossFormerGAN_SE_16K ...')
     myClearVoice = ClearVoice(task='speech_enhancement', model_names=['MossFormerGAN_SE_16K'])
 
@@ -71,6 +72,7 @@ if False:
         audio = librosa.resample(audio, orig_sr=sr, target_sr=16000)
     if len(audio.shape) < 2:
     	audio = np.reshape(audio, [1, audio.shape[0]])
+    #audio = np.concatenate((audio, audio), axis=0)
     audio = audio.astype(np.float32)
     ## audio: [batch, length]
     ##output_wav: [batch, length]
@@ -78,7 +80,7 @@ if False:
     sf.write('samples/output_MossFormerGAN_SE_16K_batch.wav', output_wav[0, :], sr)
 
 ##-----Demo Six: use MossFormer2_SS_16K model for speech separation -----------------
-if False:
+if True:
     print(f'testing MossFormer2_SS_16K ...')
     myClearVoice = ClearVoice(task='speech_separation', model_names=['MossFormer2_SS_16K'])
 

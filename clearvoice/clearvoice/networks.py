@@ -55,7 +55,7 @@ class SpeechModel:
         # Check if mps is available
         if mps.is_available():
             args.use_cuda = 1
-            self.device = torch.device('mps')
+            self.device = torch.device('cpu') #torch.device('mps')
         # Check if a GPU is available
         elif torch.cuda.is_available():
             # Find the GPU with the most free memory using a custom method
@@ -411,7 +411,12 @@ class SpeechModel:
             output_path = os.path.join(output_path, self.name)
             if not os.path.isdir(output_path):
                 os.makedirs(output_path)
-
+                
+        # check if the output dir exists, if not then create it
+        directory_path = os.path.dirname(output_path)
+        if not os.path.isdir(directory_path):
+            os.makedirs(directory_path)
+            
         # Ensure proper directory setup when using keys for filenames
         if use_key and not os.path.isdir(output_path):
             if os.path.exists(output_path):
