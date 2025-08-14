@@ -128,8 +128,12 @@ class dataset_lip(data.Dataset):
             target_power = np.linalg.norm(a_tgt, 2)**2 / a_tgt.size
             snr_0 = 10**(float(line[c*4+4])/20)
             
-            # read int audio
+            
             c=1
+            # read int visual
+            int_visual_path=self.visual_direc+line[c*4+1]+'/'+line[c*4+2]+'/'+line[c*4+3]+'.mp4'
+            v_int = self._load_raw_video(int_visual_path, min_length_visual)
+            # read int audio
             int_audio_path=self.audio_direc+line[c*4+1]+'/'+line[c*4+2]+'/'+line[c*4+3]+'.wav'
             a_int = self._audioread(int_audio_path, min_length_audio, self.audio_sr)
             intef_power = np.linalg.norm(a_int, 2)**2 / a_int.size
@@ -148,6 +152,10 @@ class dataset_lip(data.Dataset):
 
             elif self.args.speaker_no == 3:
                 c=2
+                # read int visual
+                int_visual_path_2=self.visual_direc+line[c*4+1]+'/'+line[c*4+2]+'/'+line[c*4+3]+'.mp4'
+                v_int2 = self._load_raw_video(int_visual_path_2, min_length_visual)
+                # read int audio
                 int_audio_path_2=self.audio_direc+line[c*4+1]+'/'+line[c*4+2]+'/'+line[c*4+3]+'.wav'
                 a_int2 = self._audioread(int_audio_path_2, min_length_audio, self.audio_sr)
                 intef_power_2 = np.linalg.norm(a_int2, 2)**2 / a_int2.size
@@ -172,11 +180,16 @@ class dataset_lip(data.Dataset):
             v_max_length = int(self.max_length*self.ref_sr)
             if min_length_visual > v_max_length:
                 v_start=np.random.randint(0, (min_length_visual - v_max_length))
-                a_start= int(v_start/self.ref_sr*self.audio_sr)
                 v_tgt = v_tgt[v_start:v_start+v_max_length]
+                v_int = v_int[v_start:v_start+v_max_length]
+                
+                a_start= int(v_start/self.ref_sr*self.audio_sr)
                 a_mix = a_mix[a_start:a_start+a_max_length]
                 a_tgt = a_tgt[a_start:a_start+a_max_length]
                 a_int = a_int[a_start:a_start+a_max_length]
+                if self.args.speaker_no == 3:
+                    v_int2 = v_int2[v_start:v_start+v_max_length]
+                    a_int2 = a_int2[a_start:a_start+a_max_length]
             
             
             # audio normalization
@@ -185,10 +198,20 @@ class dataset_lip(data.Dataset):
                 a_mix /= max_val
                 a_tgt /= max_val
                 a_int /= max_val
+                if self.args.speaker_no == 3:
+                    a_int2 /= max_val
 
             mix_audios.append(a_mix)
-            tgt_audios.append(a_tgt)
-            tgt_visuals.append(v_tgt)
+            if self.args.network_audio.backbone in ['av_tfgridnet_isam']:
+                if self.args.speaker_no == 2:
+                    tgt_audios.append([a_tgt, a_int])
+                    tgt_visuals.append([v_tgt, v_int])
+                elif self.args.speaker_no == 3:
+                    tgt_audios.append([a_tgt, a_int, a_int2])
+                    tgt_visuals.append([v_tgt, v_int, v_int2])
+            else:
+                tgt_audios.append(a_tgt)
+                tgt_visuals.append(v_tgt)
 
         return np.asarray(mix_audios, dtype=np.float32), np.asarray(tgt_audios, dtype=np.float32), np.asarray(tgt_visuals, dtype=np.float32)
 
