@@ -43,9 +43,9 @@ network_audio:
   emb_hs: 1
   activation: "prelu"
   isam: 1
+  spk_att_dropout: 1    # 0 for always use speaker attention
 
 # optimizer
-spk_att_dropout: 1    # 0 for always use speaker attention
 loss_type: ss_sisdr      # "snr", "sisdr", "hybrid"
 lr_warmup: 1
 init_learning_rate: 0.0005
