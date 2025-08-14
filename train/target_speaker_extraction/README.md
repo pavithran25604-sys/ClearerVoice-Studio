@@ -119,7 +119,7 @@ bash evaluate_only.sh
 | VoxCeleb2 | 3-mix | [AV-DPRNN](https://ieeexplore.ieee.org/document/9887809) | [This repo](./config/config_VoxCeleb2_lip_dprnn_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_dprnn_3spk/)| 10.5 | 11.0
 | VoxCeleb2 | 3-mix | [AV-TFGridNet](https://arxiv.org/abs/2310.19644) | [This repo](./config/config_VoxCeleb2_lip_tfgridnet_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_tfgridnet_3spk/)| 14.2 | 14.6
 | VoxCeleb2 | 3-mix | [AV-TFGridNet-ISAM](https://arxiv.org/abs/2505.20635) | [This repo](./config/config_VoxCeleb2_lip_tfgridnet-isam_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_tfgridnet-isam_3spk/)| 15.6 | 15.9
-| VoxCeleb2 | 3-mix | AV-Mossformer2| [This repo](./config/config_VoxCeleb2_lip_mossformer2_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_mossformer2_3spk/)| 15.5 | 16.0
+| VoxCeleb2 | 3-mix | [AV-Mossformer2](https://arxiv.org/abs/2506.19398) | [This repo](./config/config_VoxCeleb2_lip_mossformer2_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_mossformer2_3spk/)| 15.5 | 16.0
 
 
 ### Non-causal (Offline) LRS2-mix benchmark: 
