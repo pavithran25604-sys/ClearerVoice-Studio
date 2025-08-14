@@ -77,12 +77,15 @@ class network_wrapper(nn.Module):
             else: return ests
         elif self.args.network_audio.backbone in ['av_convtasnet', 'av_dprnn', 'av_tfgridnet', 'av_mossformer2']:
             # speaker extraction with lip reference
-            if self.args.network_reference.cue == 'lip':
-                ref = ref.to(self.args.device)
-                ref = self.ref_encoder(ref)
-                return self.sep_network(mixture, ref)
-            else:
-                raise NameError('Wrong network and reference combination selection')
+            ref = ref.to(self.args.device)
+            ref = self.ref_encoder(ref)
+            return self.sep_network(mixture, ref)
+        elif self.args.network_audio.backbone in ['av_tfgridnet_isam']:
+            # speaker extraction with lip reference
+            visual = ref.to(self.args.device)
+            visual = visual.view(visual.size(0)*self.args.speaker_no, visual.size(2), 112,112)
+            ref = self.ref_encoder(visual)
+            return self.sep_network(mixture, ref)
         else:
             raise NameError('Wrong network selection')
 
