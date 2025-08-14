@@ -408,7 +408,7 @@ class GridNetV3Block(nn.Module):
         out = batch + inter_rnn
 
         if self.args.network_audio.isam:
-            if self.args.spk_att_dropout == 1:
+            if self.args.network_audio.spk_att_dropout == 1:
                 # Inter-speaker layer
                 B, N, K, S = out.shape
                 spk_seq = self.args.speaker_no
