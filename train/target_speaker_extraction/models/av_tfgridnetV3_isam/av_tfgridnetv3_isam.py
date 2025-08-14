@@ -33,7 +33,7 @@ def _clones(module, N):
     return nn.ModuleList([copy.deepcopy(module) for i in range(N)])
 
 
-class av_TFGridNetV3_att_ss(AbsSeparator):
+class av_TFGridNetV3_isam(AbsSeparator):
     """Offline TFGridNetV3.
 
     On top of TFGridNetV2, TFGridNetV3 slightly modifies the internal architecture
