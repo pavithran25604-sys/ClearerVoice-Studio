@@ -36,6 +36,11 @@ class network_wrapper(nn.Module):
             from models.av_mossformer2.av_mossformer2 import av_Mossformer
             self.sep_network = av_Mossformer(args)
             self._define_lip_ref_encoder()
+        elif args.network_audio.backbone == 'av_tfgridnet_isam':
+            from models.av_tfgridnetV3_isam.av_tfgridnetv3_isam import av_TFGridNetV3_isam
+            self.sep_network = av_TFGridNetV3_isam(args)
+            self._define_lip_ref_encoder()
+            raise NameError('Wrong network selection')
         else:
             raise NameError('Wrong network selection')
 
