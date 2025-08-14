@@ -5,7 +5,7 @@ from torch.nn.modules.loss import _Loss
 
 EPS = 1e-6
 
-from .time_loss import cal_SDR, cal_SISNR
+from .time_loss import cal_SDR, cal_SISNR, cal_SESISNR
 
 class loss_wrapper(_Loss):
     def __init__(self, loss_type):
@@ -17,6 +17,9 @@ class loss_wrapper(_Loss):
         if self.loss_type == 'SpEx-plus':
             from .class_loss import Loss_Softmax
             self.ae_loss = Loss_Softmax()
+        elif self.loss_type == 'ss_sisdr_hybrid':
+            from .stft_loss import MultiResolutionSTFTLoss
+            self.stft_loss = MultiResolutionSTFTLoss()
 
     def forward(self, clean, estimate):
         if self.loss_type == 'snr':
@@ -27,9 +30,20 @@ class loss_wrapper(_Loss):
             loss = 0 - torch.mean(cal_SISNR(clean, estimate)) + self.stft_loss(clean, estimate)
         elif self.loss_type == 'SpEx-plus':
             loss = self.spex_plus_loss(clean, estimate)
+        elif self.loss_type == 'se_sisdr':
+            loss = self.se_sisdr(clean, estimate)
+        elif self.loss_type == 'ss_sisdr':
+            loss = self.ss_sisdr(clean, estimate)
+        elif self.loss_type == 'sesisdr':
+            loss = 0 - torch.mean(cal_SESISNR(clean, estimate))
+        elif self.loss_type == 'ss_sesisdr':
+            loss = self.ss_sesisdr(clean, estimate)
+        elif self.loss_type == 'ss_sisdr_hybrid':
+            loss = self.ss_sisdr_hybrid(clean, estimate)
         else:
             raise NameError('Wrong loss selection')
         
+        loss = loss.clamp(max=80)
         return loss
     
     def spex_plus_loss(self, clean, estimate):
@@ -41,4 +55,12 @@ class loss_wrapper(_Loss):
             loss = 0.8*loss - 0.1*torch.mean(max_snr_2) - 0.1*torch.mean(max_snr_3)
             speaker_loss, spk_acc_0 = self.ae_loss(spk_pred, speakers)
             loss = loss + 0.5*speaker_loss
+        return loss
+
+
+    def ss_sisdr(self, clean, estimate):
+        B, C, K = clean.size()
+        clean = clean.view(B*C, K)
+        estimate = estimate.view(B*C, K)
+        loss = 0 - torch.mean(cal_SISNR(clean, estimate))
         return loss
