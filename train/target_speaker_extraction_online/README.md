@@ -80,7 +80,7 @@ bash evaluate_only.sh
 
  Dataset | Speakers | Model| Config | Checkpoint | SI-SDRi (dB) | SDRi (dB) 
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| LRS3 | 2-mix | [AV-SkiM](https://arxiv.org/abs/2506.01270) | [This repo](./config/config_LRS3_lip_SkiM_2spk.yaml)| [This repo](log_LRS3_lip_avSkiM_2spk) | 11.6 | 11.9
+| LRS3 | 2-mix | [AV-SkiM](https://arxiv.org/abs/2506.01270) | [This repo](./config/config_LRS3_lip_SkiM_2spk.yaml)| [This repo](https://huggingface.co/alibabasglab/log_LRS3_lip_avSkiM_2spk) | 11.6 | 11.9
 | LRS3 | 2-mix | [AV-SkiM-autoregressive](https://arxiv.org/abs/2506.01270) | [This repo](./config/config_LRS3_lip_SkiM-ar_2spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_LRS3_lip_avSkiM-ar_2spk/) | 12.0 | 12.4 
 
 
