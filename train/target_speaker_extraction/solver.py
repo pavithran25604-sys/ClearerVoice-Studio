@@ -235,6 +235,10 @@ class Solver(object):
 
                 a_tgt_est = self.model(a_mix, ref_tgt)
 
+                if self.args.loss_type == 'ss_sisdr':
+                    a_tgt = a_tgt[:,0,:]
+                    a_tgt_est = a_tgt_est[:,0,:]
+
                 sisnri = cal_SISNR(a_tgt, a_tgt_est) - cal_SISNR(a_tgt, a_mix)
                 avg_sisnri += sisnri
                 # print(sisnri)
