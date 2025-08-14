@@ -40,7 +40,6 @@ class network_wrapper(nn.Module):
             from models.av_tfgridnetV3_isam.av_tfgridnetv3_isam import av_TFGridNetV3_isam
             self.sep_network = av_TFGridNetV3_isam(args)
             self._define_lip_ref_encoder()
-            raise NameError('Wrong network selection')
         else:
             raise NameError('Wrong network selection')
 
