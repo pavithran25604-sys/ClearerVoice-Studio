@@ -290,10 +290,12 @@ class GridNetV3Block(nn.Module):
         self.emb_hs = emb_hs
         self.n_head = n_head
 
-        encoder_layers = TransformerEncoderLayer(d_model=emb_dim, nhead=1, dim_feedforward=emb_dim*4, batch_first=True)
-        self.spk_att = TransformerEncoder(encoder_layers, num_layers=1)
-        self.spk_norm = nn.GroupNorm(1, emb_dim, eps=1e-8)
         self.args = args
+        if self.args.network_audio.isam:
+            encoder_layers = TransformerEncoderLayer(d_model=emb_dim, nhead=1, dim_feedforward=emb_dim*4, batch_first=True)
+            self.spk_att = TransformerEncoder(encoder_layers, num_layers=1)
+            self.spk_norm = nn.GroupNorm(1, emb_dim, eps=1e-8)
+        
 
     def forward(self, x):
         """GridNetV2Block Forward.
@@ -405,78 +407,79 @@ class GridNetV3Block(nn.Module):
 
         out = batch + inter_rnn
 
-        if self.args.spk_att_dropout == 1:
-            # Inter-speaker layer
-            B, N, K, S = out.shape
-            spk_seq = self.args.speaker_no
-            if self.args.speaker_no == 2:
-                if random.uniform(0,1) >= 0.5:
-                    inter_spk = out.contiguous().view(B//spk_seq, spk_seq, N, K, S)
-                    inter_spk = inter_spk.permute(0,3,4,1,2).contiguous().view(B//spk_seq*K*S, spk_seq, N)
-                    # try:
-                    #     inter_spk = self.spk_att(inter_spk)
-                    # except:
-                    chunk_size = 40000
-                    for itr in range(0, inter_spk.shape[0]//chunk_size+1):
-                        inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:] = self.spk_att(inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:])
-                    inter_spk = inter_spk.contiguous().view(B//spk_seq, K,S, spk_seq, N)
-                    inter_spk = inter_spk.permute(0,3,4,1,2)
-                    inter_spk = inter_spk.contiguous().view(B, N, K, S)
-                    inter_spk = self.spk_norm(inter_spk)
-                    out += inter_spk
-            elif self.args.speaker_no == 3:
-                if random.uniform(0,1) >= 0.95: # 0.66666:
-                    inter_spk = out.contiguous().view(B//spk_seq, spk_seq, N, K, S)
-                    inter_spk = inter_spk.permute(0,3,4,1,2).contiguous().view(B//spk_seq*K*S, spk_seq, N)
-                    # try:
-                    #     inter_spk = self.spk_att(inter_spk)
-                    # except:
-                    chunk_size = 40000
-                    for itr in range(0, inter_spk.shape[0]//chunk_size+1):
-                        inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:] = self.spk_att(inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:])
-                    inter_spk = inter_spk.contiguous().view(B//spk_seq, K,S, spk_seq, N)
-                    inter_spk = inter_spk.permute(0,3,4,1,2)
-                    inter_spk = inter_spk.contiguous().view(B, N, K, S)
-                    inter_spk = self.spk_norm(inter_spk)
-                    out += inter_spk
-                else:
-                    slt_spk_seq = 2
-                    slt_idx = random.sample(set([0, 1, 2]), slt_spk_seq)
-                    # slt_idx = [0,1]
-                    inter_spk = out.contiguous().view(B//spk_seq, spk_seq, N, K, S)
-                    slt_spk = inter_spk[:,slt_idx,:,:,:].clone()
-                    slt_spk = slt_spk.permute(0,3,4,1,2).contiguous().view(B//spk_seq*K*S, slt_spk_seq, N)
-                    # try:
-                    #     slt_spk = self.spk_att(slt_spk)
-                    # except:
-                    chunk_size = 40000
-                    for itr in range(0, slt_spk.shape[0]//chunk_size+1):
-                        slt_spk[chunk_size*itr:chunk_size*(itr+1),:,:] = self.spk_att(slt_spk[chunk_size*itr:chunk_size*(itr+1),:,:])
-                    slt_spk = slt_spk.contiguous().view(B//spk_seq, K, S, slt_spk_seq, N)
-                    slt_spk = slt_spk.permute(0,3,4,1,2)
-                    slt_spk = slt_spk.contiguous().view(B//spk_seq*slt_spk_seq, N, K, S)
-                    slt_spk = self.spk_norm(slt_spk)
-
-                    slt_spk = slt_spk.view(B//spk_seq, slt_spk_seq, N, K, S)
-                    out = out.view(B//spk_seq, spk_seq, N, K, S)
-                    out[:,slt_idx,:,:,:] += slt_spk
-                    out = out.view(B, N, K, S)
-        else:
-            B, N, K, S = out.shape
-            spk_seq = self.args.speaker_no
-            inter_spk = out.contiguous().view(B//spk_seq, spk_seq, N, K, S)
-            inter_spk = inter_spk.permute(0,3,4,1,2).contiguous().view(B//spk_seq*K*S, spk_seq, N)
-            # try:
-            #     inter_spk = self.spk_att(inter_spk)
-            # except:
-            chunk_size = 40000
-            for itr in range(0, inter_spk.shape[0]//chunk_size+1):
-                inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:] = self.spk_att(inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:])
-            inter_spk = inter_spk.contiguous().view(B//spk_seq, K,S, spk_seq, N)
-            inter_spk = inter_spk.permute(0,3,4,1,2)
-            inter_spk = inter_spk.contiguous().view(B, N, K, S)
-            inter_spk = self.spk_norm(inter_spk)
-            out += inter_spk
+        if self.args.network_audio.isam:
+            if self.args.spk_att_dropout == 1:
+                # Inter-speaker layer
+                B, N, K, S = out.shape
+                spk_seq = self.args.speaker_no
+                if self.args.speaker_no == 2:
+                    if random.uniform(0,1) >= 0.5:
+                        inter_spk = out.contiguous().view(B//spk_seq, spk_seq, N, K, S)
+                        inter_spk = inter_spk.permute(0,3,4,1,2).contiguous().view(B//spk_seq*K*S, spk_seq, N)
+                        # try:
+                        #     inter_spk = self.spk_att(inter_spk)
+                        # except:
+                        chunk_size = 40000
+                        for itr in range(0, inter_spk.shape[0]//chunk_size+1):
+                            inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:] = self.spk_att(inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:])
+                        inter_spk = inter_spk.contiguous().view(B//spk_seq, K,S, spk_seq, N)
+                        inter_spk = inter_spk.permute(0,3,4,1,2)
+                        inter_spk = inter_spk.contiguous().view(B, N, K, S)
+                        inter_spk = self.spk_norm(inter_spk)
+                        out += inter_spk
+                elif self.args.speaker_no == 3:
+                    if random.uniform(0,1) >= 0.95: # 0.66666:
+                        inter_spk = out.contiguous().view(B//spk_seq, spk_seq, N, K, S)
+                        inter_spk = inter_spk.permute(0,3,4,1,2).contiguous().view(B//spk_seq*K*S, spk_seq, N)
+                        # try:
+                        #     inter_spk = self.spk_att(inter_spk)
+                        # except:
+                        chunk_size = 40000
+                        for itr in range(0, inter_spk.shape[0]//chunk_size+1):
+                            inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:] = self.spk_att(inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:])
+                        inter_spk = inter_spk.contiguous().view(B//spk_seq, K,S, spk_seq, N)
+                        inter_spk = inter_spk.permute(0,3,4,1,2)
+                        inter_spk = inter_spk.contiguous().view(B, N, K, S)
+                        inter_spk = self.spk_norm(inter_spk)
+                        out += inter_spk
+                    else:
+                        slt_spk_seq = 2
+                        slt_idx = random.sample(set([0, 1, 2]), slt_spk_seq)
+                        # slt_idx = [0,1]
+                        inter_spk = out.contiguous().view(B//spk_seq, spk_seq, N, K, S)
+                        slt_spk = inter_spk[:,slt_idx,:,:,:].clone()
+                        slt_spk = slt_spk.permute(0,3,4,1,2).contiguous().view(B//spk_seq*K*S, slt_spk_seq, N)
+                        # try:
+                        #     slt_spk = self.spk_att(slt_spk)
+                        # except:
+                        chunk_size = 40000
+                        for itr in range(0, slt_spk.shape[0]//chunk_size+1):
+                            slt_spk[chunk_size*itr:chunk_size*(itr+1),:,:] = self.spk_att(slt_spk[chunk_size*itr:chunk_size*(itr+1),:,:])
+                        slt_spk = slt_spk.contiguous().view(B//spk_seq, K, S, slt_spk_seq, N)
+                        slt_spk = slt_spk.permute(0,3,4,1,2)
+                        slt_spk = slt_spk.contiguous().view(B//spk_seq*slt_spk_seq, N, K, S)
+                        slt_spk = self.spk_norm(slt_spk)
+    
+                        slt_spk = slt_spk.view(B//spk_seq, slt_spk_seq, N, K, S)
+                        out = out.view(B//spk_seq, spk_seq, N, K, S)
+                        out[:,slt_idx,:,:,:] += slt_spk
+                        out = out.view(B, N, K, S)
+            else:
+                B, N, K, S = out.shape
+                spk_seq = self.args.speaker_no
+                inter_spk = out.contiguous().view(B//spk_seq, spk_seq, N, K, S)
+                inter_spk = inter_spk.permute(0,3,4,1,2).contiguous().view(B//spk_seq*K*S, spk_seq, N)
+                # try:
+                #     inter_spk = self.spk_att(inter_spk)
+                # except:
+                chunk_size = 40000
+                for itr in range(0, inter_spk.shape[0]//chunk_size+1):
+                    inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:] = self.spk_att(inter_spk[chunk_size*itr:chunk_size*(itr+1),:,:])
+                inter_spk = inter_spk.contiguous().view(B//spk_seq, K,S, spk_seq, N)
+                inter_spk = inter_spk.permute(0,3,4,1,2)
+                inter_spk = inter_spk.contiguous().view(B, N, K, S)
+                inter_spk = self.spk_norm(inter_spk)
+                out += inter_spk
 
         return out
 
