@@ -5,7 +5,7 @@ from torch.nn.modules.loss import _Loss
 
 EPS = 1e-6
 
-from .time_loss import cal_SDR, cal_SISNR, cal_SESISNR
+from .time_loss import cal_SDR, cal_SISNR
 
 class loss_wrapper(_Loss):
     def __init__(self, loss_type):
@@ -30,16 +30,8 @@ class loss_wrapper(_Loss):
             loss = 0 - torch.mean(cal_SISNR(clean, estimate)) + self.stft_loss(clean, estimate)
         elif self.loss_type == 'SpEx-plus':
             loss = self.spex_plus_loss(clean, estimate)
-        elif self.loss_type == 'se_sisdr':
-            loss = self.se_sisdr(clean, estimate)
         elif self.loss_type == 'ss_sisdr':
             loss = self.ss_sisdr(clean, estimate)
-        elif self.loss_type == 'sesisdr':
-            loss = 0 - torch.mean(cal_SESISNR(clean, estimate))
-        elif self.loss_type == 'ss_sesisdr':
-            loss = self.ss_sesisdr(clean, estimate)
-        elif self.loss_type == 'ss_sisdr_hybrid':
-            loss = self.ss_sisdr_hybrid(clean, estimate)
         else:
             raise NameError('Wrong loss selection')
         
