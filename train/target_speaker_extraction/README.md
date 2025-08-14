@@ -97,6 +97,7 @@ bash evaluate_only.sh
 * AV-ConvTasNet (Causal/Non-causal) [[Paper: Time Domain Audio Visual Speech Separation](https://arxiv.org/abs/1904.03760)]
 * AV-DPRNN (aka USEV) (Non-causal) [[Paper: Universal Speaker Extraction With Visual Cue](https://ieeexplore.ieee.org/document/9887809)]
 * AV-TFGridNet (Non-causal) [[Paper: Scenario-Aware Audio-Visual TF-GridNet for Target Speech Extraction](https://arxiv.org/abs/2310.19644)]
+* AV-TFGridNet-ISAM (Non-causal) [[Paper: Plug-and-Play Co-Occurring Face Attention for Robust Audio-Visual Speaker Extraction](https://arxiv.org/abs/2505.20635)]
 * AV-Mossformer2 (Non-causal) [Paper: ClearVoice]
 
 
