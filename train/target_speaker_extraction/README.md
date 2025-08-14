@@ -129,11 +129,11 @@ bash evaluate_only.sh
 | LRS2 | 2-mix | [AV-ConvTasNet](https://arxiv.org/abs/1904.03760) | [This repo](./config/config_LRS2_lip_convtasnet_2spk.yaml)| [This repo](https://huggingface.co/alibabasglab/log_LRS2_lip_convtasnet_2spk/) | 11.6 | 11.9
 | LRS2 | 2-mix | [AV-DPRNN](https://ieeexplore.ieee.org/document/9887809) | [This repo](./config/config_LRS2_lip_dprnn_2spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_LRS2_lip_dprnn_2spk/) | 12.0 | 12.4 
 | LRS2 | 2-mix | [AV-TFGridNet](https://arxiv.org/abs/2310.19644) | [This repo](./config/config_LRS2_lip_tfgridnet_2spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_LRS2_lip_tfgridnet_2spk/)| 15.1 | 15.4 
-| LRS2 | 2-mix | AV-Mossformer2| [This repo](./config/config_LRS2_lip_mossformer2_2spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_LRS2_lip_mossformer2_2spk/)| 15.5 | 15.8 
+| LRS2 | 2-mix | [AV-Mossformer2](https://arxiv.org/abs/2506.19398)| [This repo](./config/config_LRS2_lip_mossformer2_2spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_LRS2_lip_mossformer2_2spk/)| 15.5 | 15.8 
 | LRS2 | 3-mix | [AV-ConvTasNet](https://arxiv.org/abs/1904.03760) | [This repo](./config/config_LRS2_lip_convtasnet_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_LRS2_lip_convtasnet_3spk/)| 10.8 | 11.3
 | LRS2 | 3-mix | [AV-DPRNN](https://ieeexplore.ieee.org/document/9887809) | [This repo](./config/config_LRS2_lip_dprnn_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_LRS2_lip_dprnn_3spk/)| 10.6 | 11.1 
 | LRS2 | 3-mix | [AV-TFGridNet](https://arxiv.org/abs/2310.19644) | [This repo](./config/config_LRS2_lip_tfgridnet_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_LRS2_lip_tfgridnet_3spk/)| 15.0 | 15.4 
-| LRS2 | 3-mix | AV-Mossformer2 | [This repo](./config/config_LRS2_lip_mossformer2_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_LRS2_lip_mossformer2_3spk/)| 16.2 | 16.6 
+| LRS2 | 3-mix | [AV-Mossformer2](https://arxiv.org/abs/2506.19398) | [This repo](./config/config_LRS2_lip_mossformer2_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_LRS2_lip_mossformer2_3spk/)| 16.2 | 16.6 
 
 
 
