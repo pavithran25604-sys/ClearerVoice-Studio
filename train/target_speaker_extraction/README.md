@@ -111,12 +111,14 @@ bash evaluate_only.sh
 | VoxCeleb2 | 2-mix | [reentry](https://ieeexplore.ieee.org/document/9721129) | [Paper](https://ieeexplore.ieee.org/document/9721129) | - | 12.6 | 12.9
 | VoxCeleb2 | 2-mix | [AV-DPRNN](https://ieeexplore.ieee.org/document/9887809) | [This repo](./config/config_VoxCeleb2_lip_dprnn_2spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_dprnn_2spk/)| 11.5 | 11.8
 | VoxCeleb2 | 2-mix | [AV-TFGridNet](https://arxiv.org/abs/2310.19644) | [This repo](./config/config_VoxCeleb2_lip_tfgridnet_2spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_tfgridnet_2spk/)| 13.7 | 14.1
-| VoxCeleb2 | 2-mix | AV-Mossformer2| [This repo](./config/config_VoxCeleb2_lip_mossformer2_2spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_mossformer2_2spk/)| 14.6 | 14.9
+| VoxCeleb2 | 2-mix | [AV-TFGridNet-ISAM](https://arxiv.org/abs/2505.20635) | [This repo](./config/config_VoxCeleb2_lip_tfgridnet-isam_2spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_tfgridnet-isam_2spk/)| 14.5 | 14.8
+| VoxCeleb2 | 2-mix | [AV-Mossformer2](https://arxiv.org/abs/2506.19398) | [This repo](./config/config_VoxCeleb2_lip_mossformer2_2spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_mossformer2_2spk/)| 14.6 | 14.9
 | VoxCeleb2 | 3-mix | [AV-ConvTasNet](https://arxiv.org/abs/1904.03760) | [Paper](https://arxiv.org/abs/1904.03760) | - | 9.8 | 10.2
 | VoxCeleb2 | 3-mix | [MuSE](https://arxiv.org/abs/2010.07775) | [Paper](https://arxiv.org/abs/2010.07775) | - | 11.6 | 12.2
 | VoxCeleb2 | 3-mix | [reentry](https://ieeexplore.ieee.org/document/9721129) | [Paper](https://ieeexplore.ieee.org/document/9721129) | - | 12.6 | 13.1
 | VoxCeleb2 | 3-mix | [AV-DPRNN](https://ieeexplore.ieee.org/document/9887809) | [This repo](./config/config_VoxCeleb2_lip_dprnn_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_dprnn_3spk/)| 10.5 | 11.0
 | VoxCeleb2 | 3-mix | [AV-TFGridNet](https://arxiv.org/abs/2310.19644) | [This repo](./config/config_VoxCeleb2_lip_tfgridnet_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_tfgridnet_3spk/)| 14.2 | 14.6
+| VoxCeleb2 | 3-mix | [AV-TFGridNet-ISAM](https://arxiv.org/abs/2505.20635) | [This repo](./config/config_VoxCeleb2_lip_tfgridnet-isam_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_tfgridnet-isam_3spk/)| 15.6 | 15.9
 | VoxCeleb2 | 3-mix | AV-Mossformer2| [This repo](./config/config_VoxCeleb2_lip_mossformer2_3spk.yaml) | [This repo](https://huggingface.co/alibabasglab/log_VoxCeleb2_lip_mossformer2_3spk/)| 15.5 | 16.0
 
 
