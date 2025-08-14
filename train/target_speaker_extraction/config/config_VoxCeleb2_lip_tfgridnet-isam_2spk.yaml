@@ -42,6 +42,7 @@ network_audio:
   emb_ks: 4
   emb_hs: 1
   activation: "prelu"
+  isam: 1
 
 # optimizer
 spk_att_dropout: 1    # 0 for always use speaker attention
